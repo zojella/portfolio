@@ -47,6 +47,52 @@ html, body { padding: 0; margin: 0; width: 100%; height: 100%; background: #1e1e
   max-height: calc(100% - 2 * var(--spacer-margin));
 }
 
+/* Loading spinner, shown on each slide until its image has arrived */
+.slide::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 40px;
+  height: 40px;
+  margin: -20px 0 0 -20px;
+  border: 3px solid rgba(255, 255, 255, 0.15);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+.slide.loaded::before { display: none; }
+.slide img { opacity: 0; }
+.slide.loaded img { opacity: 1; transition: opacity 0.3s ease, transform 0.25s ease; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* Full-screen loader, shown until every image has downloaded */
+#loader {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  background: #1e1e1e;
+  color: #fff;
+  font: 14px/1 system-ui, sans-serif;
+  transition: opacity 0.5s ease;
+}
+#loader.done { opacity: 0; pointer-events: none; }
+#loader .ring {
+  width: 40px;
+  height: 40px;
+  border: 3px solid rgba(255, 255, 255, 0.15);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+#loader .bar { width: 200px; height: 3px; background: rgba(255, 255, 255, 0.15); border-radius: 2px; overflow: hidden; }
+#loader .fill { width: 0; height: 100%; background: #fff; transition: width 0.3s ease; }
+
 /* Navigation */
 .nav {
   position: fixed;
@@ -78,38 +124,44 @@ html, body { padding: 0; margin: 0; width: 100%; height: 100%; background: #1e1e
 </head>
 <body>
 <div id="slides">
-  <div class="slide"><img class="spacer" src="Artboard 41@4x.png"></div>
-  <div class="slide"><img class="spacer" src="Artboard 42@4x.png"></div>
-  <div class="slide"><img src="Artboard 1@4x.png"></div>
-  <div class="slide"><img class="spacer" src="Artboard 43@4x.png"></div>
-  <div class="slide"><img src="Artboard 2@4x.png"></div>
-  <div class="slide"><img class="spacer" src="Artboard 44@4x.png"></div>
-  <div class="slide"><img src="Artboard 3@4x.png"></div>
-  <div class="slide"><img src="Artboard 4@4x.png"></div>
-  <div class="slide"><img src="Artboard 38@4x.png"></div>
-  <div class="slide"><img class="spacer" src="Artboard 45@4x.png"></div>
-  <div class="slide"><img src="Artboard 5@4x.png"></div>
-  <div class="slide"><img class="spacer" src="Artboard 46@4x.png"></div>
-  <div class="slide"><img src="Artboard 6@4x.png"></div>
-  <div class="slide"><img src="Artboard 27@4x.png"></div>
-  <div class="slide"><img class="spacer" src="Artboard 47@4x.png"></div>
-  <div class="slide"><img src="Artboard 10@4x.png"></div>
-  <div class="slide"><img src="Artboard 11@4x.png"></div>
-  <div class="slide"><img class="spacer" src="Artboard 48@4x.png"></div>
-  <div class="slide"><img src="Artboard 12@4x.png"></div>
-  <div class="slide"><img src="Artboard 13@4x.png"></div>
-  <div class="slide"><img class="spacer" src="Artboard 49@4x.png"></div>
-  <div class="slide"><img src="Artboard 7@4x.png"></div>
-  <div class="slide"><img src="Artboard 8@4x.png"></div>
-  <div class="slide"><img src="Artboard 9@4x.png"></div>
-  <div class="slide"><img class="spacer" src="Artboard 50@4x.png"></div>
-  <div class="slide"><img src="Artboard 29@4x.png"></div>
-  <div class="slide"><img src="Artboard 30@4x.png"></div>
-  <div class="slide"><img src="Artboard 31@4x.png"></div>
-  <div class="slide"><img class="spacer" src="Artboard 51@4x.png"></div>
-  <div class="slide"><img src="Artboard 32@4x.png"></div>
-  <div class="slide"><img src="Artboard 33@4x.png"></div>
-  <div class="slide"><img src="Artboard 34@4x.png"></div>
+  <div class="slide"><img loading="lazy"class="spacer" src="Artboard 41@4x.png"></div>
+  <div class="slide"><img loading="lazy"class="spacer" src="Artboard 42@4x.png"></div>
+  <div class="slide"><img loading="lazy"src="Artboard 1@4x.png"></div>
+  <div class="slide"><img loading="lazy"class="spacer" src="Artboard 43@4x.png"></div>
+  <div class="slide"><img loading="lazy"src="Artboard 2@4x.png"></div>
+  <div class="slide"><img loading="lazy"class="spacer" src="Artboard 44@4x.png"></div>
+  <div class="slide"><img loading="lazy"src="Artboard 3@4x.png"></div>
+  <div class="slide"><img loading="lazy"src="Artboard 4@4x.png"></div>
+  <div class="slide"><img loading="lazy"src="Artboard 38@4x.png"></div>
+  <div class="slide"><img loading="lazy"class="spacer" src="Artboard 45@4x.png"></div>
+  <div class="slide"><img loading="lazy"src="Artboard 5@4x.png"></div>
+  <div class="slide"><img loading="lazy"class="spacer" src="Artboard 46@4x.png"></div>
+  <div class="slide"><img loading="lazy"src="Artboard 6@4x.png"></div>
+  <div class="slide"><img loading="lazy"src="Artboard 27@4x.png"></div>
+  <div class="slide"><img loading="lazy"class="spacer" src="Artboard 47@4x.png"></div>
+  <div class="slide"><img loading="lazy"src="Artboard 10@4x.png"></div>
+  <div class="slide"><img loading="lazy"src="Artboard 11@4x.png"></div>
+  <div class="slide"><img loading="lazy"class="spacer" src="Artboard 48@4x.png"></div>
+  <div class="slide"><img loading="lazy"src="Artboard 12@4x.png"></div>
+  <div class="slide"><img loading="lazy"src="Artboard 13@4x.png"></div>
+  <div class="slide"><img loading="lazy"class="spacer" src="Artboard 49@4x.png"></div>
+  <div class="slide"><img loading="lazy"src="Artboard 7@4x.png"></div>
+  <div class="slide"><img loading="lazy"src="Artboard 8@4x.png"></div>
+  <div class="slide"><img loading="lazy"src="Artboard 9@4x.png"></div>
+  <div class="slide"><img loading="lazy"class="spacer" src="Artboard 50@4x.png"></div>
+  <div class="slide"><img loading="lazy"src="Artboard 29@4x.png"></div>
+  <div class="slide"><img loading="lazy"src="Artboard 30@4x.png"></div>
+  <div class="slide"><img loading="lazy"src="Artboard 31@4x.png"></div>
+  <div class="slide"><img loading="lazy"class="spacer" src="Artboard 51@4x.png"></div>
+  <div class="slide"><img loading="lazy"src="Artboard 32@4x.png"></div>
+  <div class="slide"><img loading="lazy"src="Artboard 33@4x.png"></div>
+  <div class="slide"><img loading="lazy"src="Artboard 34@4x.png"></div>
+</div>
+
+<div id="loader">
+  <div class="ring"></div>
+  <div class="bar"><div class="fill"></div></div>
+  <div id="progress"></div>
 </div>
 
 <div class="nav">
@@ -124,6 +176,28 @@ const slides = container.querySelectorAll('.slide');
 const prev = document.getElementById('prev');
 const next = document.getElementById('next');
 const counter = document.getElementById('counter');
+
+// --- Loading ---
+// Hide each slide's spinner once its image has finished loading,
+// and keep the full-screen loader up until all of them have
+const loader = document.getElementById('loader');
+const fill = loader.querySelector('.fill');
+const progress = document.getElementById('progress');
+let loadedCount = 0;
+
+function showProgress() {
+  progress.textContent = loadedCount + ' / ' + slides.length;
+  fill.style.width = (loadedCount / slides.length * 100) + '%';
+  if (loadedCount === slides.length) loader.classList.add('done');
+}
+
+slides.forEach(slide => {
+  const img = slide.querySelector('img');
+  const done = () => { slide.classList.add('loaded'); loadedCount++; showProgress(); };
+  if (img.complete) done();
+  else { img.addEventListener('load', done); img.addEventListener('error', done); }
+});
+showProgress();
 
 function current() {
   return Math.round(container.scrollTop / container.clientHeight);
